@@ -23,6 +23,9 @@
 
 @custom-variant dark (&:is(.dark *));
 
+html {
+  background-color: rgb(231, 231, 231);
+}
 body {
   margin: 0;
   padding: 0;
@@ -33,6 +36,7 @@ body {
   box-sizing: border-box;
   overflow: auto;
   overscroll-behavior-x: none;
+  background-color: rgb(231, 231, 231);
 }
 
 @theme inline {
@@ -162,6 +166,9 @@ body {
   h6 {
     font-family: var(--font-heading);
   }
+  html {
+    scroll-behavior: smooth;
+  }
   html,
   body,
   #root {
@@ -196,6 +203,50 @@ img.broken-image-fallback {
   to {
     opacity: 1;
   }
+}
+
+/* Header load animation (line by line) – classic smooth */
+.header-line {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: header-line-in 0.5s ease-out forwards;
+}
+.header-line-1 {
+  animation-delay: 0s;
+}
+.header-line-2 {
+  animation-delay: 0.15s;
+}
+.header-line-3 {
+  animation-delay: 0.3s;
+}
+@keyframes header-line-in {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Guitar container fades in after header – classic smooth */
+.guitar-container-animate {
+  opacity: 0;
+  animation: guitar-container-in 0.5s ease-out 0.8s forwards;
+}
+@keyframes guitar-container-in {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Section scroll-in animation */
+.section-animate {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.5s ease-out, transform 0.5s ease-out;
+}
+.section-animate.section-visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* Mobile: hide music pointer on project buttons (keep 0% opacity) */

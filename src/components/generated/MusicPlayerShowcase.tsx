@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 // Placeholder SVG data URIs to replace missing asset imports
 const musicPointer =
@@ -368,6 +368,24 @@ const ExperienceLine = ({
   </div>
 );
 export const MusicPlayerShowcase = () => {
+  const mainRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const main = mainRef.current;
+    if (!main) return;
+    const els = main.querySelectorAll('.section-animate');
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) entry.target.classList.add('section-visible');
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -40px 0px' }
+    );
+    els.forEach((el) => observer.observe(el));
+    return () => els.forEach((el) => observer.unobserve(el));
+  }, []);
+
   const scrollToTop = (e: React.MouseEvent) => {
     e.preventDefault();
     window.scrollTo({
@@ -398,6 +416,7 @@ export const MusicPlayerShowcase = () => {
       />
 
       <main
+        ref={mainRef}
         style={{
           display: 'flex',
           flexDirection: 'column',
@@ -427,6 +446,7 @@ export const MusicPlayerShowcase = () => {
             }}
           >
             <div
+              className="header-line header-line-1"
               style={{
                 display: 'flex',
                 flexDirection: 'row',
@@ -460,6 +480,7 @@ export const MusicPlayerShowcase = () => {
               </h1>
             </div>
             <p
+              className="header-line header-line-2"
               style={{
                 margin: 0,
                 color: 'rgba(0, 0, 0, 0.5)',
@@ -474,6 +495,7 @@ export const MusicPlayerShowcase = () => {
           </div>
 
           <nav
+            className="header-line header-line-3"
             style={{
               display: 'flex',
               flexDirection: 'row',
@@ -517,6 +539,7 @@ export const MusicPlayerShowcase = () => {
         </header>
 
         <div
+          className="guitar-container-animate"
           style={{
             width: '100%',
             height: '400px',
@@ -534,12 +557,15 @@ export const MusicPlayerShowcase = () => {
               width: '100%',
               aspectRatio: '3 / 2',
               maxWidth: '100%',
+              zIndex: 0,
             }}
-            aria-label="Rive container"
+            aria-label="Guitar image container"
           >
             <img
               src="/guitar.png"
               alt=""
+              draggable={false}
+              onContextMenu={(e) => e.preventDefault()}
               style={{
                 position: 'absolute',
                 left: 0,
@@ -547,9 +573,24 @@ export const MusicPlayerShowcase = () => {
                 width: '100%',
                 height: '100%',
                 objectFit: 'contain',
-                zIndex: 0,
+                userSelect: 'none',
+                pointerEvents: 'none',
               }}
             />
+          </div>
+          <div
+            style={{
+              position: 'absolute',
+              left: '50%',
+              top: '50%',
+              transform: 'translate(-50%, -50%) scale(1.5) translateX(-60px)',
+              width: '100%',
+              aspectRatio: '1800 / 267',
+              maxWidth: '100%',
+              zIndex: 1,
+            }}
+            aria-label="Rive container"
+          >
             <iframe
               style={{
                 position: 'absolute',
@@ -558,9 +599,8 @@ export const MusicPlayerShowcase = () => {
                 width: '100%',
                 height: '100%',
                 border: 'none',
-                zIndex: 1,
               }}
-              src="https://rive.app/s/1CUybNmm4kyUoeRrfh8WmA/embed?runtime=rive-renderer"
+              src="https://rive.app/s/ecQhN-dvtUyCwG2Za8Qx6w/embed?runtime=rive-renderer"
               title="Rive"
               allowFullScreen
               allow="autoplay"
@@ -569,6 +609,7 @@ export const MusicPlayerShowcase = () => {
         </div>
 
         <section
+          className="section-animate"
           style={{
             display: 'flex',
             flexDirection: 'column',
@@ -612,6 +653,7 @@ export const MusicPlayerShowcase = () => {
         />
 
         <section
+          className="section-animate"
           style={{
             display: 'flex',
             flexDirection: 'column',
@@ -645,6 +687,7 @@ export const MusicPlayerShowcase = () => {
         </section>
 
         <section
+          className="section-animate"
           style={{
             display: 'flex',
             flexDirection: 'column',
@@ -677,6 +720,7 @@ export const MusicPlayerShowcase = () => {
         </section>
 
         <section
+          className="section-animate"
           style={{
             display: 'flex',
             flexDirection: 'column',
@@ -719,6 +763,7 @@ export const MusicPlayerShowcase = () => {
         />
 
         <section
+          className="section-animate"
           style={{
             display: 'flex',
             flexDirection: 'column',
@@ -745,6 +790,7 @@ export const MusicPlayerShowcase = () => {
         </section>
 
         <footer
+          className="section-animate"
           style={{
             paddingTop: '120px',
             paddingBottom: '40px',
