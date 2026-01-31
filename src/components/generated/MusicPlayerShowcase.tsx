@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // Placeholder SVG data URIs to replace missing asset imports
 const musicPointer =
@@ -79,6 +79,14 @@ const MusicPlayerButton = ({
   linkLabel?: string;
 }) => {
   const [isHovered, setIsHovered] = useState(false);
+  const [canHover, setCanHover] = useState(true);
+  useEffect(() => {
+    const m = window.matchMedia('(hover: hover)');
+    setCanHover(m.matches);
+    const fn = () => setCanHover(m.matches);
+    m.addEventListener('change', fn);
+    return () => m.removeEventListener('change', fn);
+  }, []);
   const inner = (
     <div
       role={href ? undefined : 'button'}
@@ -210,7 +218,7 @@ const MusicPlayerButton = ({
                 transform: 'translateY(-50%)',
                 width: '18px',
                 height: '95px',
-                opacity: isHovered ? 1 : 0,
+                opacity: canHover && isHovered ? 1 : 0,
                 transition: 'opacity 0.25s ease',
                 pointerEvents: 'none',
               }}
@@ -519,14 +527,18 @@ export const MusicPlayerShowcase = () => {
             display: 'flex',
             justifyContent: 'center',
             alignItems: 'center',
+            touchAction: 'pan-y',
           }}
           aria-label="Guitar container"
         >
           <div
             style={{
-              width: '100%',
+              width: '85%',
+              maxWidth: '100%',
+              margin: '0 auto',
               transform: 'translateX(-80px) scale(1.5)',
               transformOrigin: 'center center',
+              touchAction: 'pan-y',
             }}
           >
             <iframe
@@ -536,6 +548,7 @@ export const MusicPlayerShowcase = () => {
                 aspectRatio: '1800 / 1200',
                 minHeight: 0,
                 display: 'block',
+                touchAction: 'pan-y',
               }}
               src="https://rive.app/s/zN2hXH0i9EyW-cQRTacSRA/embed?runtime=rive-renderer"
               title="Rive"
