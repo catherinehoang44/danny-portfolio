@@ -198,6 +198,13 @@ img.broken-image-fallback {
   }
 }
 
+/* Mobile: hide music pointer on project buttons (keep 0% opacity) */
+@media (max-width: 768px) {
+  img.music-pointer-icon {
+    opacity: 0 !important;
+  }
+}
+
 /* Figma Design Tokens */
 /**
  * Design Tokens

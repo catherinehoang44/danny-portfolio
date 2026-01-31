@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 // Placeholder SVG data URIs to replace missing asset imports
 const musicPointer =
@@ -79,14 +79,6 @@ const MusicPlayerButton = ({
   linkLabel?: string;
 }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const [canHover, setCanHover] = useState(true);
-  useEffect(() => {
-    const m = window.matchMedia('(hover: hover)');
-    setCanHover(m.matches);
-    const fn = () => setCanHover(m.matches);
-    m.addEventListener('change', fn);
-    return () => m.removeEventListener('change', fn);
-  }, []);
   const inner = (
     <div
       role={href ? undefined : 'button'}
@@ -121,7 +113,11 @@ const MusicPlayerButton = ({
         }}
       >
         <img
-          src={isHovered ? '/pause.svg' : 'https://storage.googleapis.com/storage.magicpath.ai/user/368065211384610816/figma-assets/9e4e9fb4-b63d-4a63-a731-667d01a792ae.svg'}
+          src={
+            isHovered
+              ? '/pause.svg'
+              : 'https://storage.googleapis.com/storage.magicpath.ai/user/368065211384610816/figma-assets/9e4e9fb4-b63d-4a63-a731-667d01a792ae.svg'
+          }
           alt={isHovered ? 'Pause' : 'Play'}
           style={{
             width: '7.07px',
@@ -209,6 +205,7 @@ const MusicPlayerButton = ({
             }}
           >
             <img
+              className="music-pointer-icon"
               src="/music-pointer.svg"
               alt=""
               style={{
@@ -218,7 +215,7 @@ const MusicPlayerButton = ({
                 transform: 'translateY(-50%)',
                 width: '18px',
                 height: '95px',
-                opacity: canHover && isHovered ? 1 : 0,
+                opacity: isHovered ? 1 : 0,
                 transition: 'opacity 0.25s ease',
                 pointerEvents: 'none',
               }}
@@ -524,33 +521,46 @@ export const MusicPlayerShowcase = () => {
             width: '100%',
             height: '400px',
             overflow: 'visible',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            touchAction: 'pan-y',
+            position: 'relative',
           }}
           aria-label="Guitar container"
         >
           <div
             style={{
-              width: '85%',
+              position: 'absolute',
+              left: '50%',
+              top: '50%',
+              transform: 'translate(-50%, -50%) scale(1.5) translateX(-60px)',
+              width: '100%',
+              aspectRatio: '3 / 2',
               maxWidth: '100%',
-              margin: '0 auto',
-              transform: 'translateX(-80px) scale(1.5)',
-              transformOrigin: 'center center',
-              touchAction: 'pan-y',
             }}
+            aria-label="Rive container"
           >
+            <img
+              src="/guitar.png"
+              alt=""
+              style={{
+                position: 'absolute',
+                left: 0,
+                top: 0,
+                width: '100%',
+                height: '100%',
+                objectFit: 'contain',
+                zIndex: 0,
+              }}
+            />
             <iframe
               style={{
-                border: 'none',
+                position: 'absolute',
+                left: 0,
+                top: 0,
                 width: '100%',
-                aspectRatio: '1800 / 1200',
-                minHeight: 0,
-                display: 'block',
-                touchAction: 'pan-y',
+                height: '100%',
+                border: 'none',
+                zIndex: 1,
               }}
-              src="https://rive.app/s/zN2hXH0i9EyW-cQRTacSRA/embed?runtime=rive-renderer"
+              src="https://rive.app/s/1CUybNmm4kyUoeRrfh8WmA/embed?runtime=rive-renderer"
               title="Rive"
               allowFullScreen
               allow="autoplay"
